@@ -1,0 +1,77 @@
+---
+
+- name: Ubuntu 20.04 LAMP stack
+
+  user: edureka
+
+  hosts: webserver
+
+  become: yes
+
+  tasks:
+
+    - name: Update repository list and cache
+
+      apt: update_cache=yes cache_valid_time=3600
+
+      
+
+    - name: Upgrade all packages on the Cloud Server
+
+      apt: upgrade=yes
+
+      
+
+    - name: Install the latest versions of each component
+
+      apt:
+
+        name:
+
+          - apache2
+
+        state: latest
+
+
+
+    - name: Check that apache2 is enabled and running
+
+      service:
+
+        name: apache2
+
+        enabled: true
+
+        state: started
+
+
+    # Run docker container
+
+    - name: Run docker container
+
+      docker_container:
+
+        name: phpfpm
+
+        image: nimmis/alpine-apache
+
+        network_mode: bridge
+
+        state: started
+        
+        restart: yes
+
+        ports:
+
+          - "8888:80"
+
+        volumes:
+
+          - /var/www:/var/www/
+    - name: Confirm that the web server is working
+
+      uri:
+
+        url: http://{{ansible_hostname}}:8888
+
+        status_code: 200
