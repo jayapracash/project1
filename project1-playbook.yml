@@ -29,6 +29,8 @@
         name:
 
           - apache2
+          - docker
+          - puppet
 
         state: latest
 
