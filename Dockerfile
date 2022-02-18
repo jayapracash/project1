@@ -1,5 +1,5 @@
-FROM alpine:latest
+FROM nimmis/alpine-apache
 
-EXPOSE 8080
+EXPOSE 80
 
-CMD nc -l -p 8080
+CMD nc -l -p 80
