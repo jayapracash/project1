@@ -1,6 +1,6 @@
 ---
 
-- name: Ubuntu 20.04 LAMP stack
+- name: Ubuntu edureka project1 solution
 
   user: edureka
 
@@ -43,7 +43,20 @@
         enabled: true
 
         state: started
+ 
+    - name: copy Dockerfile
 
+      copy:
+
+        src: ./Dockerfile
+
+        dest: /home/edureka/Dockerfile
+
+        owner: edureka
+
+        group: edureka
+
+        mode: '0644'
 
     # Run docker container
 
@@ -75,3 +88,19 @@
         url: http://{{ansible_hostname}}:8888
 
         status_code: 200
+       
+    
+    - name: Stop The container
+      docker_container:
+
+        name: phpfpm
+
+        state: stopped
+
+    - name: remove container
+
+      docker_container:
+
+        name: phpfpm
+
+        state: absent
